@@ -4,7 +4,7 @@ set -e
 # xray-user-del.sh - Удаление пользователя
 # ============================================
 
-USERS_DIR="/root/users"
+USERS_DIR="/opt/vps-manage/users"
 XRAY_CONFIG="/usr/local/etc/xray/config.json"
 HYSTERIA_CONFIG="/etc/hysteria/config.yaml"
 
