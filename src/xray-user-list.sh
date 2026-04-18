@@ -4,7 +4,7 @@
 # ============================================
 
 XRAY_CONFIG="/usr/local/etc/xray/config.json"
-USERS_DIR="/root/users"
+USERS_DIR="/opt/vps-manage/users"
 
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
