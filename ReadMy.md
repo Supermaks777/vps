@@ -1,11 +1,7 @@
 # Настройка VPS для VLESS + Reality
 
 ## 📁 Структура репозитория
-git@github.com:Supermaks777/vps.git
-├── src/
-│ ├── create_xray.sh # Первичная установка Xray
-│ └── regenerate_keys.sh # Генерация новых ключей
-└── README.md # Эта инструкция
+
 
 ## 🚀 Первичная настройка сервера (выполняется один раз)
 
@@ -38,69 +34,21 @@ bash
 exit
 ssh jocastab@IP_ВАШЕГО_СЕРВЕРА
 
-📦 Установка Xray (выполняется под jocastab)
-Способ А: Клонировать репозиторий и запустить локально
-bash
-git clone https://github.com/Supermaks777/vps.git
-cd vps/src
-chmod +x create_xray.sh regenerate_keys.sh
-./create_xray.sh
-Способ Б: Запустить напрямую из GitHub (публичный репозиторий)
-bash
-bash <(curl -fsSL https://raw.githubusercontent.com/Supermaks777/vps/main/src/create_xray.sh)
-После установки скрипт покажет VLESS-ссылку — сохраните её.
+# 1. Создать директорию
+sudo mkdir -p /opt/vps-manage
 
-🔄 Генерация новых ключей (если старые скомпрометированы)
-bash
-bash <(curl -fsSL https://raw.githubusercontent.com/Supermaks777/vps/main/src/regenerate_keys.sh)
-После выполнения старые клиенты перестанут работать — обновите ссылку во всех устройствах.
+# 2. Скачать скрипты туда
+cd /opt/vps-manage
+sudo curl -fsSL https://raw.githubusercontent.com/Supermaks777/vps/main/src/create_server.sh -o create_server.sh
+sudo curl -fsSL https://raw.githubusercontent.com/Supermaks777/vps/main/src/xray-user-add.sh -o xray-user-add.sh
+sudo curl -fsSL https://raw.githubusercontent.com/Supermaks777/vps/main/src/xray-user-del.sh -o xray-user-del.sh
+sudo curl -fsSL https://raw.githubusercontent.com/Supermaks777/vps/main/src/xray-user-list.sh -o xray-user-list.sh
 
-⚡ Быстрые команды (добавить в ~/.bashrc)
-Чтобы не запоминать длинные команды, добавьте в файл ~/.bashrc:
+# 3. Сделать исполняемыми
+sudo chmod +x /opt/vps-manage/*.sh
 
-bash
-nano ~/.bashrc
-В конец файла добавьте:
-
-bash
-# Быстрая установка/настройка VPS
-alias vps-setup='bash <(curl -fsSL https://raw.githubusercontent.com/Supermaks777/vps/main/src/create_xray.sh)'
-alias vps-renew='bash <(curl -fsSL https://raw.githubusercontent.com/Supermaks777/vps/main/src/regenerate_keys.sh)'
-Примените изменения:
-
-bash
+echo 'alias vps-setup="sudo bash /opt/vps-manage/create_server.sh"' >> ~/.bashrc
+echo 'alias vps-add="sudo bash /opt/vps-manage/xray-user-add.sh"' >> ~/.bashrc
+echo 'alias vps-del="sudo bash /opt/vps-manage/xray-user-del.sh"' >> ~/.bashrc
+echo 'alias vps-list="sudo bash /opt/vps-manage/xray-user-list.sh"' >> ~/.bashrc
 source ~/.bashrc
-Теперь достаточно ввести:
-
-Команда	Что делает
-vps-setup	Первичная установка Xray
-vps-renew	Генерация новых ключей
-🔒 Дополнительные рекомендации
-Отключить вход по паролю для SSH (если используете ключи)
-bash
-sudo sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
-sudo systemctl restart ssh
-Настроить Fail2ban (защита от брутфорса)
-bash
-sudo apt install fail2ban -y
-sudo systemctl enable fail2ban --now
-Проверить статус Xray
-bash
-sudo systemctl status xray
-Посмотреть логи Xray
-bash
-sudo journalctl -u xray -f
-📱 Настройка клиентов
-Платформа	Клиент	Как добавить
-Android	v2rayNG	Скопировать VLESS-ссылку → импорт из буфера
-Windows	v2rayN	Скопировать VLESS-ссылку → Ctrl+V
-iOS	Shadowrocket / Streisand	Добавить по ссылке
-macOS	V2RayX	По ссылке
-⚠️ Важные замечания
-Не запускайте скрипты от root — используйте пользователя с sudo
-
-Сохраняйте VLESS-ссылку в надёжном месте (менеджер паролей)
-
-После regenerate_keys все старые клиенты потеряют доступ
-
-Публичный репозиторий означает, что ссылки видны всем — но сами ключи генерируются на сервере
