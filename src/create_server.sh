@@ -18,7 +18,6 @@ apt install -y curl wget ufw fail2ban jq openssl
 echo -e "${YELLOW}2. Настройка UFW...${NC}"
 ufw allow 22/tcp comment 'SSH'
 ufw allow 443/tcp comment 'VLESS'
-ufw allow 8443/tcp comment 'Hysteria2 TCP'
 ufw allow 8443/udp comment 'Hysteria2 UDP'
 ufw --force enable
 
@@ -35,20 +34,21 @@ bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release
 
 # 5. Генерация параметров Reality
 echo -e "${YELLOW}4. Генерация ключей Reality...${NC}"
-UUID=$(cat /proc/sys/kernel/random/uuid)
+UUID_TEMP=$(cat /proc/sys/kernel/random/uuid)
 PRIVATE_KEY=$(xray x25519 | awk '/PrivateKey/ {print $2}')
 PUBLIC_KEY=$(xray x25519 -i "$PRIVATE_KEY" | grep 'Password (PublicKey):' | sed 's/Password (PublicKey): //')
 SHORT_ID=$(openssl rand -hex 8)
 SERVER_IP=$(curl -s ifconfig.me)
 
-mkdir -p /root
-cat > /root/reality_params.txt << EOF
+mkdir -p /opt/vps-manage
+cat > /opt/vps-manage/reality_params.txt << EOF
 # Reality параметры сервера (НЕ ДЕЛИТЬСЯ!)
 PrivateKey: $PRIVATE_KEY
 PublicKey: $PUBLIC_KEY
 ShortID: $SHORT_ID
 ServerIP: $SERVER_IP
 EOF
+chmod 600 /opt/vps-manage/reality_params.txt
 
 # 6. Конфиг Xray (без клиентов)
 echo -e "${YELLOW}5. Создание конфигурации Xray...${NC}"
@@ -95,14 +95,18 @@ openssl req -x509 -nodes -days 365 -newkey ec -pkeyopt ec_paramgen_curve:P-256 \
   -subj "/CN=$SERVER_IP" -addext "subjectAltName=IP:$SERVER_IP"
 chown -R hysteria:hysteria /etc/hysteria/certs
 
-# 9. Конфиг Hysteria2 (без клиентов)
+# 9. Конфиг Hysteria2 (userpass, без клиентов)
 echo -e "${YELLOW}8. Создание конфигурации Hysteria2...${NC}"
-tee /etc/hysteria/config.yaml > /dev/null << EOF
+tee /etc/hysteria/config.yaml > /dev/null << 'EOF'
 listen: :8443
 
 tls:
   cert: /etc/hysteria/certs/cert.pem
   key: /etc/hysteria/certs/key.pem
+
+auth:
+  type: userpass
+  userpass:
 
 masquerade:
   type: proxy
@@ -124,9 +128,9 @@ echo "✅ НАСТРОЙКА СЕРВЕРА ЗАВЕРШЕНА"
 echo -e "==========================================${NC}"
 echo ""
 echo "📁 Директория пользователей: /opt/vps-manage/users/"
-echo "🔑 Параметры сервера: /root/reality_params.txt"
+echo "🔑 Параметры сервера: /opt/vps-manage/reality_params.txt"
 echo ""
 echo -e "${YELLOW}📝 Следующие шаги:${NC}"
-echo "  ./xray-user-add.sh <имя>   - добавить пользователя"
-echo "  ./xray-user-list.sh        - список пользователей"
-echo "  ./xray-user-del.sh <имя>   - удалить пользователя"
+echo "  vps-add <имя>   - добавить пользователя"
+echo "  vps-list        - список пользователей"
+echo "  vps-del <имя>   - удалить пользователя"
