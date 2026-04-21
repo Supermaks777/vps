@@ -69,7 +69,7 @@ cat > $USER_FILE << EOF
 vless://$UUID@$SERVER_IP:443?encryption=none&flow=xtls-rprx-vision&security=reality&sni=www.microsoft.com&pbk=$PUBLIC_KEY&sid=$SHORT_ID&type=tcp&headerType=none#$USERNAME
 
 === Резервный канал (Hysteria2) ===
-hysteria2://$HY_PASSWORD@$SERVER_IP:8443?insecure=1&sni=www.bing.com#$USERNAME
+hysteria2://$USERNAME:$HY_PASSWORD@$SERVER_IP:8443?insecure=1&sni=www.bing.com#$USERNAME
 
 === UUID для Xray ===
 $UUID
@@ -87,6 +87,6 @@ echo -e "${YELLOW}📱 ОСНОВНОЙ КАНАЛ (VLESS+Reality):${NC}"
 echo -e "${GREEN}vless://$UUID@$SERVER_IP:443?encryption=none&flow=xtls-rprx-vision&security=reality&sni=www.microsoft.com&pbk=$PUBLIC_KEY&sid=$SHORT_ID&type=tcp&headerType=none#$USERNAME${NC}"
 echo ""
 echo -e "${YELLOW}🔄 РЕЗЕРВНЫЙ КАНАЛ (Hysteria2):${NC}"
-echo -e "${GREEN}hysteria2://$HY_PASSWORD@$SERVER_IP:8443?insecure=1&sni=www.bing.com#$USERNAME${NC}"
+echo -e "${GREEN}hysteria2://$USERNAME:$HY_PASSWORD@$SERVER_IP:8443?insecure=1&sni=www.bing.com#$USERNAME${NC}"
 echo ""
 echo -e "${YELLOW}📁 Данные сохранены:${NC} $USER_FILE"
