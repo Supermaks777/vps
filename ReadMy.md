@@ -77,6 +77,7 @@ git@github.com:Supermaks777/vps.git
 |--------|-----------|----------------------|------------|
 | **v2rayNG** | Android | [GitHub Releases](https://github.com/2dust/v2rayNG/releases) | Скачивайте файл `v2rayNG_*_arm64-v8a.apk` (для современных телефонов) |
 | **v2rayN** | Windows | [GitHub Releases](https://github.com/2dust/v2rayN/releases) | Скачивайте `v2rayN-windows-64-desktop.zip` (портативная версия, не требует установки) |
+| **NekoBox** | Android | [GitHub Releases](https://github.com/MatsuriDayo/NekoBoxForAndroid/releases) | Скачивайте `NekoBoxForAndroid_*_arm64-v8a.apk` (для Hysteria2) |
 
 > ⚠️ **Важно:** Скачивайте клиенты **только с официальных репозиториев GitHub**. Сторонние сайты могут распространять модифицированные версии с вредоносным кодом.
 
