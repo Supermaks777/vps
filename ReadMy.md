@@ -95,7 +95,7 @@ git@github.com:Supermaks777/vps.git
 
 | Платформа | Клиент | Как добавить |
 |-----------|--------|--------------|
-| **Android** | NekoBox | Импорт ссылки (v2rayNG поддерживает Hysteria2) |
+| **Android** | NekoBox | Импорт ссылки (NekoBox поддерживает Hysteria2) |
 | **Windows** | v2rayN / Hiddify | Проверьте поддержку Hysteria2 в вашей версии |
 | **iOS** | Streisand / Hiddify | По ссылке |
 
