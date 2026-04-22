@@ -40,26 +40,22 @@ git@github.com:Supermaks777/vps.git
 * exit
 * ssh my_user@адрес_сервера
 
-### 7. Создаем рабочую директорию (для скприптов и данных пользователей)
-* sudo mkdir -p /opt/vps-manage
-
-### 8. Скачать скрипты по работе с пользователями и делаем их исполняемыми
-* cd /opt/vps-manage
-* sudo curl -fsSL https://raw.githubusercontent.com/Supermaks777/vps/main/src/create_server.sh -o create_server.sh
-* sudo curl -fsSL https://raw.githubusercontent.com/Supermaks777/vps/main/src/xray-user-add.sh -o xray-user-add.sh
-* sudo curl -fsSL https://raw.githubusercontent.com/Supermaks777/vps/main/src/xray-user-del.sh -o xray-user-del.sh
-* sudo curl -fsSL https://raw.githubusercontent.com/Supermaks777/vps/main/src/xray-user-list.sh -o xray-user-list.sh
-* sudo chmod +x /opt/vps-manage/*.sh
-
-### 9. Создаем алиасы для запуска скриптов
-* echo 'alias vps-setup="sudo bash /opt/vps-manage/create_server.sh"' >> ~/.bashrc
-* echo 'alias vps-add="sudo bash /opt/vps-manage/xray-user-add.sh"' >> ~/.bashrc
-* echo 'alias vps-del="sudo bash /opt/vps-manage/xray-user-del.sh"' >> ~/.bashrc
-* echo 'alias vps-list="sudo bash /opt/vps-manage/xray-user-list.sh"' >> ~/.bashrc
+### 7. Скачиваем и запускаем скрипт установки, после чего удаляем
+* curl -fsSL https://raw.githubusercontent.com/Supermaks777/vps/main/src/install-all.sh -o install-all.sh
+* chmod +x install-all.sh
+* ./install-all.sh
+* rm install-all.sh
 * source ~/.bashrc
 
-### 10. Запускаем создание сервера
+### 8. Запускаем создание сервера
 * vps-setup
+
+### 9. Получаем токен телеграмм бота
+
+
+### 10. Запускаем создание телеграмм бота
+* vps-create-bot <ТОКЕН_ТЕЛЕГРАММ_БОТА>
+
 
 # 👥 Управление пользователями
 
@@ -68,6 +64,7 @@ git@github.com:Supermaks777/vps.git
 | **Добавить пользователя** | `vps-add <имя_пользователя>` | `vps-add papa` | • Проверка, что пользователь не существует в Xray и Hysteria2<br>• Генерация UUID для VLESS<br>• Генерация случайного пароля для Hysteria2<br>• Добавление в конфиг Xray<br>• Добавление в конфиг Hysteria2<br>• Создание файла `/opt/vps-manage/users/имя.txt`<br>• Вывод готовых ссылок для клиента |
 | **Список пользователей** | `vps-list` | `vps-list` | • Показывает всех пользователей из конфига Xray<br>• Показывает файлы пользователей в директории |
 | **Удалить пользователя** | `vps-del <имя_пользователя>` | `vps-del papa` | • Удаление из конфига Xray<br>• Сброс пароля в Hysteria2<br>• Удаление файла пользователя<br>• Перезапуск сервисов |
+| **Данные пользователя** | `vps-show <>` | `vps-show papa` | • Отображение на экране данных пользователя (строки для подключения) |
 
 # 📱 Настройка клиентов
 
