@@ -6,12 +6,15 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-if [ -z "$1" ]; then
-    echo -e "${RED}❌ Использование: $0 <TOKEN>${NC}"
+# Проверка параметров
+if [ -z "$1" ] || [ -z "$2" ]; then
+    echo -e "${RED}❌ Использование: $0 <TOKEN> <USER_ID>${NC}"
+    echo "Пример: $0 1234567890:ABCdefGHIJKLMNopQRStUVWXYZ-abcde 123456789"
     exit 1
 fi
 
 TOKEN=$1
+USER_ID=$2
 USER=$(whoami)
 BOT_DIR="/opt/vps-bot"
 SCRIPTS_DIR="/opt/vps-manage"
@@ -40,7 +43,7 @@ curl -fsSL $REPO_URL/bot.py -o bot.py
 curl -fsSL $REPO_URL/Dockerfile -o Dockerfile
 curl -fsSL $REPO_URL/requirements.txt -o requirements.txt
 
-# docker-compose.yml
+# docker-compose.yml с токеном и USER_ID
 cat > docker-compose.yml << EOF
 version: '3.8'
 services:
@@ -50,6 +53,7 @@ services:
     restart: unless-stopped
     environment:
       - TELEGRAM_TOKEN=$TOKEN
+      - ALLOWED_USER_IDS=$USER_ID
     volumes:
       - /home/$USER/.ssh/id_ed25519_bot:/app/ssh_key:ro
       - $SCRIPTS_DIR:/opt/vps-manage:ro
@@ -80,7 +84,5 @@ fi
 
 echo -e "${GREEN}✅ УСТАНОВКА БОТА ЗАВЕРШЕНА${NC}"
 echo ""
-echo "🤖 Бот запущен. Проверьте в Telegram:"
-echo "   /start - справка"
-echo "   /list - список пользователей"
-echo "   /add test - добавить пользователя"
+echo "🤖 Бот запущен. Команды будут отвечать только пользователю с ID: $USER_ID"
+echo "Проверьте в Telegram: /start"
