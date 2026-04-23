@@ -41,7 +41,7 @@ git@github.com:Supermaks777/vps.git
 * ssh my_user@адрес_сервера
 
 ### 7. Выполняем скрипт с гитхаба (скачивает нужные скрипты, устанавливает алиасы) и применяем
-* bash <(curl -fsSL https://raw.githubusercontent.com/Supermaks777/vps/main/src/install-all.sh)
+* bash <(curl -fsSL https://raw.githubusercontent.com/Supermaks777/vps/main/src/install_all.sh)
 * source ~/.bashrc
 
 ### 8. Запускаем создание сервера
